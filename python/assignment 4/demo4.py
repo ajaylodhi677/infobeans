@@ -1,0 +1,10 @@
+# travel distance calculator
+
+speed = int(input("Enter speed"))
+hours,minutes =map(int, input("Enter hours and minutes").split())
+
+time =(hours*60+minutes)/60 
+distance = speed*time
+
+print(" Total time :",time)
+print(" Distance :", distance,"km")

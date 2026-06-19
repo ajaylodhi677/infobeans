@@ -1,0 +1,6 @@
+#a = input("enter expression")
+
+#print(a)
+
+x=45 + (15 * (2**2)) - (20 / (+(5))) + (-(7 % 3))
+print(x)
