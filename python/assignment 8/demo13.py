@@ -9,19 +9,25 @@ Output:
 First Digit = 5"""
 
 n=int(input("Enter numbers"))
-rev =0
+"""rev =0
 for i in range(len(str(n))):
     d=n%10
     rev=rev*10+d
     n=n//10
 
 first=rev%10
-print("First digit :",first)
-"""temp=n
+print("First digit :",first)"""
+temp=n
 for i in range(len(str(temp))-1):
         n=n//10
         i=i+1
-print("first digit:",n)"""
+print("first digit:",n)
 
 
     
+
+
+
+
+
+
