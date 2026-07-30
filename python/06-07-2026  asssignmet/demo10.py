@@ -1,0 +1,70 @@
+"""0.
+Electricity Bill Processing System (Multi-House)
+
+An electricity board processes bills for multiple houses in a society.
+
+Write a program to:
+
+- Read number of houses n
+- For each house:
+    - Read units consumed
+    - Calculate bill using slab rates:
+
+        First 100 units      → ₹5 per unit  
+        Next 100 units      → ₹7 per unit  
+        Above 200 units     → ₹10 per unit  
+
+    - Apply conditions:
+        - If bill > ₹2000 → add 10% surcharge  
+        - If units < 50 → give ₹100 subsidy  
+
+    - Print bill for each house
+
+- After processing all houses:
+    - Print total bill collected
+    - Print highest bill
+
+---
+
+Input:
+3
+120
+250
+40
+
+Output:
+House 1 Bill = 640
+House 2 Bill = 1700
+House 3 Bill = 100
+
+Total Collection = 2440
+Highest Bill = 1700"""
+
+n=int(input("Enter number of houses :"))
+i=1
+high=0
+sum=0
+while i<=n:
+    a = int(input(f"Enter unit of house {i}: "))
+    bill=0
+    if a<=100:
+       bill=a*5
+       if a<50:
+          bill=bill-100
+       print(" House ",i,"Bill =",bill)
+    elif a<=200:
+       r=a-100
+       bill=r*7+500
+       print(" House ",i,"Bill =",bill)
+    else:
+       r=a-200
+       bill=r*10+500+700
+       if bill>2000:
+          bill=bill*1.10
+       print(" House ",i,"Bill =",bill)
+    sum=sum+bill
+    if high<bill:
+       high=bill
+    i=i+1	
+print("Total collection :",sum)
+print("highest bill :",high)

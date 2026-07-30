@@ -1,0 +1,18 @@
+"""
+*
+*#
+*#*
+*#*#
+*#*#*
+"""
+
+n=int(input("{Enter number of lines :"))
+
+for i in range(n,0,-1):
+     for j in range(n,i-1,-1):
+        if j%2==0:
+           print("#",end="")
+        else:
+           print("*",end="")
+     print()
+    
