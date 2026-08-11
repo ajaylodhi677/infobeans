@@ -26,4 +26,4 @@ while i<len(small):
          
      i=i+1
 else:
-   print("No suffix found :")
+   print("No prefix found ")
