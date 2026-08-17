@@ -5,7 +5,7 @@ P = "This. Is. Test." 3
 s=input("Enter the string :").split()
 count=0
 for x in s:
-    if x.endswith("."):
+    if x.endswith(".") and x[len(x)-2]!=(".") and x[len(x)-2]!=(","):
         count+=1
 print(count)
 

@@ -1,0 +1,10 @@
+from collections import namedtuple
+Account=namedtuple("Account",["acc","hold","balance"])
+acc=int(input("Enter account number :"))
+hold=input("Enter account holder name :")
+balance=int(input("Enter account balance :"))
+acco=Account(acc,hold,balance)
+print("Details")
+print(acco.acc)
+print(acco.hold)
+print(acco.balance)

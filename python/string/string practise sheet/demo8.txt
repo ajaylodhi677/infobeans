@@ -1,0 +1,8 @@
+"""
+83Create a string from a byte array. 
+Byte[] = {72, 101, 108} 
+(ASCII for H, e, l) "Hel"
+"""
+byte=input("Enter byte numbers :").split()
+for x in byte:
+    print(chr(x),end=" ")
