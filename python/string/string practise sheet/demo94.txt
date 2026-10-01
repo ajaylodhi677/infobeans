@@ -1,0 +1,15 @@
+"""94Find the smallest window containing all characters of another string. S1 ADOBECODEBANC", S2 = "ABC" "BANC"
+"""
+s1=input("Enter string 1:")
+s2=input("Enter string 2:")
+check=""
+l=len(s2)
+for i in range(len(s1)-len(check)-2):
+     check=s1[:l+i]
+     print(check)
+     l1=len(check)
+     for j in range(len(s1)-len(check)+1):
+         check1=s1[j:l1+j] 
+         final=sorted(check1)
+         if 
+         
