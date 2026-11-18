@@ -1,0 +1,68 @@
+"""
+QNO  1: Create and Populate students Table
+Columns:
+
+id INT
+
+name VARCHAR(100)
+
+age INT
+
+gender VARCHAR(10)
+
+address VARCHAR(150)
+
+phone VARCHAR(15)
+
+email VARCHAR(100)
+
+Task:
+
+Insert 5 different student records with dummy data.
+
+"""
+mysql> CREATE TABLE student (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     name VARCHAR(100),
+    ->     age INT,
+    ->     gender VARCHAR(10),
+    ->     address VARCHAR(150),
+    ->     phone VARCHAR(15),
+    ->     email VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc student;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| id      | int          | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(100) | YES  |     | NULL    |                |
+| age     | int          | YES  |     | NULL    |                |
+| gender  | varchar(10)  | YES  |     | NULL    |                |
+| address | varchar(150) | YES  |     | NULL    |                |
+| phone   | varchar(15)  | YES  |     | NULL    |                |
+| email   | varchar(100) | YES  |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into student(name,age,gender,address,phone,email) values
+    -> ('ajay',22,'male','indore','9111221535','ajaylodhi@gmail.com'),
+    -> ('rahul',21,'male','bhopal','9876543210','rahul@gmail.com'),
+    -> ('priya',20,'female','indore','9876543211','priya@gmail.com'),
+    -> ('amit',23,'male','delhi','9876543212','amit@gmail.com'),
+    -> ('neha',22,'female','pune','9876543213','neha@gmail.com');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select* from student;
++----+-------+------+--------+---------+------------+---------------------+
+| id | name  | age  | gender | address | phone      | email               |
++----+-------+------+--------+---------+------------+---------------------+
+|  1 | ajay  |   22 | male   | indore  | 9111221535 | ajaylodhi@gmail.com |
+|  2 | rahul |   21 | male   | bhopal  | 9876543210 | rahul@gmail.com     |
+|  3 | priya |   20 | female | indore  | 9876543211 | priya@gmail.com     |
+|  4 | amit  |   23 | male   | delhi   | 9876543212 | amit@gmail.com      |
+|  5 | neha  |   22 | female | pune    | 9876543213 | neha@gmail.com      |
++----+-------+------+--------+---------+------------+---------------------+
+5 rows in set (0.00 sec)

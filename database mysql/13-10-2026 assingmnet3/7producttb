@@ -1,0 +1,84 @@
+"""
+QNO  7: Create and Insert into products Table
+Columns:
+
+product_id INT
+
+product_name VARCHAR(100)
+
+category VARCHAR(50)
+
+price DECIMAL(7,2)
+
+stock_quantity INT
+
+supplier_name VARCHAR(100)
+
+manufacture_date DATE
+
+expiry_date DATE
+
+Task:
+
+Insert 6 products (some with expiry dates, some without)
+"""
+mysql> create table products(product_id int primary key auto_increment,
+    -> product_name varchar(100),
+    -> category varchar(50),
+    -> price decimal(7,2),
+    -> stock_quantity int,
+    -> supplier_name varchar(100),
+    -> manufacture_date date,
+    -> expiry_date date);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc products;
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| product_id       | int          | NO   | PRI | NULL    | auto_increment |
+| product_name     | varchar(100) | YES  |     | NULL    |                |
+| category         | varchar(50)  | YES  |     | NULL    |                |
+| price            | decimal(7,2) | YES  |     | NULL    |                |
+| stock_quantity   | int          | YES  |     | NULL    |                |
+| supplier_name    | varchar(100) | YES  |     | NULL    |                |
+| manufacture_date | date         | YES  |     | NULL    |                |
+| expiry_date      | date         | YES  |     | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into products(product_name,category,price,stock_quantity,supplier_name,manufacture_date,expiry_date) values
+    -> ('laptop','electronics',55000,10,'punewala','2026-10-10','2027-10-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into products(product_name,category,price,stock_quantity,supplier_name,manufacture_date) values
+    -> ('keyboard','accessories',1500,25,'logitech','2026-10-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+
+mysql> insert into products(product_name,category,price,stock_quantity,supplier_name,manufacture_date,expiry_date) values 
+('smartphone','electronics',25000,15,'nayan mobile dealer','2026-09-15','2028-09-15'),
+ ('keyboard','accessories',1500,25,'kp computer dealer','2026-10-01',NULL), 
+ ('rice','grocery',1200,20,'nayan kirana store','2026-10-05','2027-10-05'),
+ ('printer','electronics',12000,8,'kp electronics dealer','2026-08-20',NULL);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from products;
++------------+--------------+-------------+----------+----------------+-----------------------+------------------+-------------+
+| product_id | product_name | category    | price    | stock_quantity | supplier_name         | manufacture_date | expiry_date |
++------------+--------------+-------------+----------+----------------+-----------------------+------------------+-------------+
+|          1 | laptop       | electronics | 55000.00 |             10 | punewala              | 2026-10-10       | 2027-10-10  |
+|          2 | keyboard     | accessories |  1500.00 |             25 | logitech              | 2026-10-10       | NULL        |
+|          3 | smartphone   | electronics | 25000.00 |             15 | nayan mobile dealer   | 2026-09-15       | 2028-09-15  |
+|          4 | keyboard     | accessories |  1500.00 |             25 | kp computer dealer    | 2026-10-01       | NULL        |
+|          5 | rice         | grocery     |  1200.00 |             20 | nayan kirana store    | 2026-10-05       | 2027-10-05  |
+|          6 | printer      | electronics | 12000.00 |              8 | kp electronics dealer | 2026-08-20       | NULL        |
++------------+--------------+-------------+----------+----------------+-----------------------+------------------+-------------+
+6 rows in set (0.00 sec)
+
+mysql>
+
+
+

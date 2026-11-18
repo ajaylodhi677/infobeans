@@ -1,0 +1,129 @@
+"""
+QNO 2:-
+
+A hospital wants to store patient records and their assigned doctors. If a doctor leaves, all related patient records should be deleted.
+
+Tasks:
+Create a Doctors table:
+
+DoctorID (PRIMARY KEY, AUTO_INCREMENT)
+DoctorName (NOT NULL)
+Specialization (NOT NULL, UNIQUE)
+Create a Patients table:
+
+PatientID (PRIMARY KEY, AUTO_INCREMENT)
+PatientName (NOT NULL)
+DoctorID (FOREIGN KEY)
+Insert sample data (at least 3 doctors and 5 patients).
+
+Delete a doctor and check if related patients are removed automatically.
+
+Update a patient’s doctor to a new doctor.
+"""
+
+mysql> use info31_10_2026;
+Database changed
+
+mysql> create table doctor(doctor_id int primary key auto_increment,doctor_name varchar(20) not null,specialization varchar(20) not null unique);
+
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> create table patient(patient_id int primary key auto_increment,patient_name varchar(20) not null,doctor_id int, constraint fk_doc_pat foreign key(doctor_id) references doctor(doctor_id) on delete cascade);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into doctor values(1,'nayan','ortho');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into doctor values(2,'kp','ortho');
+
+ERROR 1062 (23000): Duplicate entry 'ortho' for key 'doctor.specialization'
+mysql> insert into doctor values(2,'kp','physio');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into doctor values(3,'aryan','neuro');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into doctor values(4,'nitin','general');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> desc patient;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| patient_id   | int         | NO   | PRI | NULL    | auto_increment |
+| patient_name | varchar(20) | NO   |     | NULL    |                |
+| doctor_id    | int         | YES  | MUL | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> insert into patient values(101,'abc',1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(102,'pqr',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(103,'xyz',1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(104,'def',4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(105,'nop',4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(106,'cef',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from doctor;
++-----------+-------------+----------------+
+| doctor_id | doctor_name | specialization |
++-----------+-------------+----------------+
+|         1 | nayan       | ortho          |
+|         2 | kp          | physio         |
+|         3 | aryan       | neuro          |
+|         4 | nitin       | general        |
++-----------+-------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from patient;
++------------+--------------+-----------+
+| patient_id | patient_name | doctor_id |
++------------+--------------+-----------+
+|        101 | abc          |         1 |
+|        102 | pqr          |         2 |
+|        103 | xyz          |         1 |
+|        104 | def          |         4 |
+|        105 | nop          |         4 |
+|        106 | cef          |         3 |
++------------+--------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> delete from doctor where doctor_id=1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from doctor;
++-----------+-------------+----------------+
+| doctor_id | doctor_name | specialization |
++-----------+-------------+----------------+
+|         2 | kp          | physio         |
+|         3 | aryan       | neuro          |
+|         4 | nitin       | general        |
++-----------+-------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from patient;
++------------+--------------+-----------+
+| patient_id | patient_name | doctor_id |
++------------+--------------+-----------+
+|        102 | pqr          |         2 |
+|        104 | def          |         4 |
+|        105 | nop          |         4 |
+|        106 | cef          |         3 |
++------------+--------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> update patient set doctor_id=1 where doctor_id=4;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`info31_10_2026`.`patient`, CONSTRAINT `fk_doc_pat` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE CASCADE)
+mysql> update patient set doctor_id=2 where doctor_id=4;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0

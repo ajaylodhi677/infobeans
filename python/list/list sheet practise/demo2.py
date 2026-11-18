@@ -30,7 +30,13 @@ nums=list(map(int,input("Enter list elements :").split()))
 nums=sorted(nums)
 result=[]
 for x in nums:
-     if x not in result:
+    if x not in result:
         result.append(x)
 print(result) 
-     
+
+#nums=set(nums)
+#print(list(nums))
+
+           
+
+

@@ -1,0 +1,171 @@
+"""
+QNO 3:
+A library maintains a record of books and their authors. If an author is removed, their books should not be deleted, but their author information should be set to NULL.
+
+Tasks:
+Create an Authors table:
+
+AuthorID (PRIMARY KEY, AUTO_INCREMENT)
+AuthorName (NOT NULL, UNIQUE)
+Create a Books table:
+
+BookID (PRIMARY KEY, AUTO_INCREMENT)
+BookTitle (NOT NULL, UNIQUE)
+AuthorID (FOREIGN KEY )
+Insert sample data (at least 3 authors and 5 books).
+
+Delete an author and check if books remain, but the AuthorID is set to NULL.
+
+Update the author of a book to a new author.
+"""
+
+mysql> show create table auther;
++--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                                                                                                              |
++--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| auther | CREATE TABLE `auther` (
+  `auther_table` int NOT NULL AUTO_INCREMENT,
+  `auther_name` varchar(20) NOT NULL,
+  PRIMARY KEY (`auther_table`),
+  UNIQUE KEY `auther_name` (`auther_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+--------------------------------------------------------------
+
+mysql> create table book(book_id int primary key auto_increment,book_title varchar(20) not null unique,auther_id int,constraint fk_book_auth foreign key(auther_id) references auther(auther_id) on delete set null on update cascade);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> alter table auther rename column auther_table to auther_id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc auther;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| auther_id   | int         | NO   | PRI | NULL    | auto_increment |
+| auther_name | varchar(20) | NO   | UNI | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc book;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| book_id    | int         | NO   | PRI | NULL    | auto_increment |
+| book_title | varchar(20) | NO   | UNI | NULL    |                |
+| auther_id  | int         | YES  | MUL | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into auther values(1,'robert');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into auther values(2,'kwasiki');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into auther values(3,'mushipremchand');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into auther values(4,'rahiman');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into auther values(5,'kabir');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(101,'richdad',1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(102,'dailyhabit',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(103,'millionare',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(104,'karbir dohe',1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(105,'sangit',4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(106,'abc',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(107,'xyz',5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from auther;
++-----------+----------------+
+| auther_id | auther_name    |
++-----------+----------------+
+|         5 | kabir          |
+|         2 | kwasiki        |
+|         3 | mushipremchand |
+|         4 | rahiman        |
+|         1 | robert         |
++-----------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from book;
++---------+-------------+-----------+
+| book_id | book_title  | auther_id |
++---------+-------------+-----------+
+|     101 | richdad     |         1 |
+|     102 | dailyhabit  |         3 |
+|     103 | millionare  |         2 |
+|     104 | karbir dohe |         1 |
+|     105 | sangit      |         4 |
+|     106 | abc         |         3 |
+|     107 | xyz         |         5 |
++---------+-------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> delete from auther where auther_id =3;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from auther;
++-----------+-------------+
+| auther_id | auther_name |
++-----------+-------------+
+|         5 | kabir       |
+|         2 | kwasiki     |
+|         4 | rahiman     |
+|         1 | robert      |
++-----------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from book;
++---------+-------------+-----------+
+| book_id | book_title  | auther_id |
++---------+-------------+-----------+
+|     101 | richdad     |         1 |
+|     102 | dailyhabit  |      NULL |
+|     103 | millionare  |         2 |
+|     104 | karbir dohe |         1 |
+|     105 | sangit      |         4 |
+|     106 | abc         |      NULL |
+|     107 | xyz         |         5 |
++---------+-------------+-----------+
+7 rows in set (0.00 sec)
+
+
+mysql> update book set auther_id= 3 where auther_id is null;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`info31_10_2026`.`book`, CONSTRAINT `fk_book_auth` FOREIGN KEY (`auther_id`) REFERENCES `auther` (`auther_id`) ON DELETE SET NULL ON UPDATE CASCADE)
+
+mysql> update book set auther_id= 1 where auther_id is null;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+
+mysql> select * from book;
++---------+-------------+-----------+
+| book_id | book_title  | auther_id |
++---------+-------------+-----------+
+|     101 | richdad     |         1 |
+|     102 | dailyhabit  |         1 |
+|     103 | millionare  |         2 |
+|     104 | karbir dohe |         1 |
+|     105 | sangit      |         4 |
+|     106 | abc         |         1 |
+|     107 | xyz         |         5 |
++---------+-------------+-----------+
+7 rows in set (0.00 sec)

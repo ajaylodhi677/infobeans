@@ -1,0 +1,158 @@
+"""
+1.
+Create a table named Students with the following columns:
+
+StudentID (INT, Primary Key)
+Name (VARCHAR(50), NOT NULL)
+Age (INT, should be between 18 and 25)
+Marks (DECIMAL(5,2), should be between 0 and 100)
+Insert the following records and observe what happens:
+
+(101, 'Alice', 20, 85.5)
+(102, 'Bob', 17, 90.0) (This should fail due to Age constraint)
+(103, 'Charlie', 22, 105.0) (This should fail due to Marks constraint)
+(104, 'David', 24, 75.0)
+
+2.
+
+Create a table Patients with:
+
+PatientID (INT, Primary Key)
+PatientName (VARCHAR(50), NOT NULL)
+Age (INT, should be between 1 and 100)
+AdmissionStatus (VARCHAR(15), should be 'Admitted' or 'Discharged', DEFAULT 'Admitted')
+TreatmentCost (DECIMAL(10,2), should be at least 1000)
+Insert records and check constraints:
+
+(201, 'Michael', 25, 'Admitted', 5000)
+(202, 'Linda', 105, 'Admitted', 8000) (Should fail due to Age constraint)
+(203, 'David', 40, DEFAULT, 1200) (Should insert 'Admitted' as default)
+(204, 'Sarah', 30, 'Discharged', 700) (Should fail due to TreatmentCost constraint)
+
+3.
+Create a table GymMembers with:
+
+MemberID (INT, Primary Key)
+MemberName (VARCHAR(50), NOT NULL)
+MembershipType (VARCHAR(15), should be 'Basic', 'Premium', or 'VIP', DEFAULT 'Basic')
+MonthlyFee (DECIMAL(6,2), should be at least 500)
+Insert records and check constraints:
+
+(501, 'John', 'Premium', 1200)
+(502, 'Emma', 'Gold', 800) (Should fail due to MembershipType constraint)
+(503, 'Daniel', DEFAULT, 700) (Should insert 'Basic' as default)
+(504, 'Sophia', 'VIP', 300) (Should fail due to MonthlyFee constraint)
+
+"""
+mysql>create database info24_10_2026;
+
+mysql> use info24_10_2026;
+Database changed
+mysql> show tables;
+Empty set (0.01 sec)
+
+mysql> create table students(student_id int primary key,
+-> name varchar(20) not null,
+-> age int check(age between 18 and 25),
+-> marks decimal(5,2) check(marks between 0 and 100));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc students;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| student_id | int          | NO   | PRI | NULL    |       |
+| name       | varchar(20)  | NO   |     | NULL    |       |
+| age        | int          | YES  |     | NULL    |       |
+| marks      | decimal(5,2) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into students values(101,'alice','20',85.5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into students values(102,'bob','17',90);
+ERROR 3819 (HY000): Check constraint 'students_chk_1' is violated.
+
+mysql> insert into students values(103,'charlie','22',105.0);
+ERROR 3819 (HY000): Check constraint 'students_chk_2' is violated.
+
+mysql> insert into students values(104,'david','24',75);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create table patients(patient_id int primary key,
+    -> patient_name varchar(20) not null,
+    -> age int,
+    -> admissionStatus varchar(15) default 'Admitted',
+    -> treatment_cost decimal(10,2),
+    -> check((age between 1 and 100) and (admissionStatus in('Admitted','Discharged')) and (treatment_cost>=1000)));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into patients values(201, 'Michael', 25, 'Admitted', 5000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patients values(202, 'Linda', 105, 'Admitted', 8000);
+ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated.
+
+mysql> insert into patients values(203, 'David', 40, DEFAULT, 1200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patients values(204, 'Sarah', 30, 'Discharged', 700);
+ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated.
+
+mysql> select * from patients;
++------------+--------------+------+-----------------+----------------+
+| patient_id | patient_name | age  | admissionStatus | treatment_cost |
++------------+--------------+------+-----------------+----------------+
+|        201 | Michael      |   25 | Admitted        |        5000.00 |
+|        203 | David        |   40 | Admitted        |        1200.00 |
++------------+--------------+------+-----------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from students;
++------------+-------+------+-------+
+| student_id | name  | age  | marks |
++------------+-------+------+-------+
+|        101 | alice |   20 | 85.50 |
+|        104 | david |   24 | 75.00 |
++------------+-------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table Gym(member_id int primary key,
+-> member_name varchar(20) not null,
+-> membership_type varchar(15) default 'Basic',
+-> monthly_fee decimal(6,2),
+-> check(membership_type in('Basic','Premium','VIP') and monthly_fee>=500));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc gym;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| member_id       | int          | NO   | PRI | NULL    |       |
+| member_name     | varchar(20)  | NO   |     | NULL    |       |
+| membership_type | varchar(15)  | YES  |     | Basic   |       |
+| monthly_fee     | decimal(6,2) | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into gym values(501, 'John', 'Premium', 1200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into gym values(502, 'Emma', 'Gold', 800);
+ERROR 3819 (HY000): Check constraint 'gym_chk_1' is violated.
+
+mysql> insert into gym values(503, 'Daniel', DEFAULT, 700);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into gym values(504, 'Sophia', 'VIP', 300);
+ERROR 3819 (HY000): Check constraint 'gym_chk_1' is violated.
+
+mysql> select * from gym;
++-----------+-------------+-----------------+-------------+
+| member_id | member_name | membership_type | monthly_fee |
++-----------+-------------+-----------------+-------------+
+|       501 | John        | Premium         |     1200.00 |
+|       503 | Daniel      | Basic           |      700.00 |
++-----------+-------------+-----------------+-------------+
+2 rows in set (0.00 sec)

@@ -1,0 +1,156 @@
+"""
+Assignment 1:
+ Understanding INNER JOIN
+Problem Statement:
+Consider the following tables:
+Employees
+emp_id emp_name dept_id
+1 Alice 101
+2 Bob 102
+3 Charlie 103
+4 David 101
+Departments
+dept_id  dept_name
+101      HR
+102     IT
+104     Finance
+
+Tasks:
+
+Write a query to display employees and their corresponding department names using INNER JOIN.
+Modify the query to display only employees who belong to the "HR" department.
+
+Assignment 2: LEFT JOIN Practice
+
+Using the same Employees and Departments tables, answer the following:
+Tasks:
+Write a query using LEFT JOIN to display all employees and their department names, including employees with no department.
+Modify the query to count how many employees are without a department.
+
+Assignment 3: RIGHT JOIN Practice
+Problem Statement:
+Consider the same tables.
+Tasks:
+Write a query using RIGHT JOIN to display all departments and their employees, including departments with no employees.
+Find the names of departments that have no employees assigned.
+Assignment 4: FULL OUTER JOIN Simulation
+Problem Statement:
+Since MySQL does not support FULL OUTER JOIN directly, use a combination of LEFT JOIN and RIGHT JOIN to display all employees and departments, ensuring that unmatched records are also included.
+
+"""
+
+mysql> create database info03_10_2026;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use database info03_10_2026;
+ERROR 1049 (42000): Unknown database 'database'
+mysql> use info03_10_2026;
+Database changed
+mysql>
+
+mysql> create table employee(emp_id int primary key auto_increment,emp_name varchar(30),dept_id int not null);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into employee values(1,'alice',101);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(1,'bob',102);
+ERROR 1062 (23000): Duplicate entry '1' for key 'employee.PRIMARY'
+mysql> insert into employee values(2,'bob',102);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(3,'charlie',103);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(4,'david',101);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|      1 | alice    |     101 |
+|      2 | bob      |     102 |
+|      3 | charlie  |     103 |
+|      4 | david    |     101 |
++--------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> create table department (dept_id int,dept_name varchar(30));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into department values(101,'hr');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into department values(102,'it');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into department values(104,'finance');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|      1 | alice    |     101 |
+|      2 | bob      |     102 |
+|      3 | charlie  |     103 |
+|      4 | david    |     101 |
++--------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from department;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|     101 | hr        |
+|     102 | it        |
+|     104 | finance   |
++---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select e.emp_name,d.dept_name from employee as e inner join department as d on e.dept_id=d.dept_id;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| bob      | it        |
+| david    | hr        |
++----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select e.emp_name,d.dept_name from employee as e inner join department as d on e.dept_id=d.dept_id where dept_name='hr';
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| david    | hr        |
++----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select count(e.emp_id) from employee as e left join department as d on e.dept_id=d.dept_id where dept_name is null;
++-----------------+
+| count(e.emp_id) |
++-----------------+
+|               1 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select d.dept_name,e.emp_name from employee as e right join department as d on d.dept_id=e.dept_id;
++-----------+----------+
+| dept_name | emp_name |
++-----------+----------+
+| hr        | david    |
+| hr        | alice    |
+| it        | bob      |
+| finance   | NULL     |
++-----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select d.dept_name,e.emp_name from employee as e right join department as d on d.dept_id=e.dept_id where emp_name is null;
++-----------+----------+
+| dept_name | emp_name |
++-----------+----------+
+| finance   | NULL     |
++-----------+----------+
+1 row in set (0.00 sec)

@@ -1,0 +1,89 @@
+"""
+QNO  8: Create and Insert into employees Table
+Columns:
+
+emp_id INT,
+emp_name VARCHAR(100),
+gender VARCHAR(10),
+dob DATE,
+department VARCHAR(100),
+position VARCHAR(100),
+salary DECIMAL(8,2),
+joining_date DATE,
+phone VARCHAR(15)
+
+Task:
+
+Insert 5 employee records
+
+"""
+mysql> create table employee(emp_id INT,
+    -> emp_name VARCHAR(100),
+    -> gender VARCHAR(10),
+    -> dob DATE,
+    -> department VARCHAR(100),
+    -> position VARCHAR(100),
+    -> salary DECIMAL(8,2),
+    -> joining_date DATE,
+    -> phone VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> desc employee;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| emp_id       | int          | YES  |     | NULL    |       |
+| emp_name     | varchar(100) | YES  |     | NULL    |       |
+| gender       | varchar(10)  | YES  |     | NULL    |       |
+| dob          | date         | YES  |     | NULL    |       |
+| department   | varchar(100) | YES  |     | NULL    |       |
+| position     | varchar(100) | YES  |     | NULL    |       |
+| salary       | decimal(8,2) | YES  |     | NULL    |       |
+| joining_date | date         | YES  |     | NULL    |       |
+| phone        | varchar(15)  | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> alter table employee modify column emp_id int primary key auto_increment;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| emp_id       | int          | NO   | PRI | NULL    | auto_increment |
+| emp_name     | varchar(100) | YES  |     | NULL    |                |
+| gender       | varchar(10)  | YES  |     | NULL    |                |
+| dob          | date         | YES  |     | NULL    |                |
+| department   | varchar(100) | YES  |     | NULL    |                |
+| position     | varchar(100) | YES  |     | NULL    |                |
+| salary       | decimal(8,2) | YES  |     | NULL    |                |
+| joining_date | date         | YES  |     | NULL    |                |
+| phone        | varchar(15)  | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql>mysql> insert into employee(emp_name,gender,dob,department,position,salary,joining_date,phone)values
+    -> ('ajay','male','2003-04-06','it','ceo',50000,'2027-02-25','9111221535'),
+    -> ('rahul','male','2002-05-12','hr','manager',35000,'2025-06-10','9876543210'), 
+    -> ('nayan','male','2001-08-15','it','developer',40000,'2024-08-20','9876543211'), 
+    -> ('priya','female','2003-11-22','finance','accountant',30000,'2025-01-15','9876543212'),
+    -> ('neha','female','2002-03-18','marketing','executive',28000,'2024-09-05','9876543213');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+
+mysql> select * from employee;
++--------+----------+--------+------------+------------+------------+----------+--------------+------------+
+| emp_id | emp_name | gender | dob        | department | position   | salary   | joining_date | phone      |
++--------+----------+--------+------------+------------+------------+----------+--------------+------------+
+|      1 | ajay     | male   | 2003-04-06 | it         | ceo        | 50000.00 | 2027-02-25   | 9111221535 |
+|      2 | rahul    | male   | 2002-05-12 | hr         | manager    | 35000.00 | 2025-06-10   | 9876543210 |
+|      3 | nayan    | male   | 2001-08-15 | it         | developer  | 40000.00 | 2024-08-20   | 9876543211 |
+|      4 | priya    | female | 2003-11-22 | finance    | accountant | 30000.00 | 2025-01-15   | 9876543212 |
+|      5 | neha     | female | 2002-03-18 | marketing  | executive  | 28000.00 | 2024-09-05   | 9876543213 |
++--------+----------+--------+------------+------------+------------+----------+--------------+------------+
+5 rows in set (0.00 sec)

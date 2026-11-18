@@ -1,0 +1,193 @@
+"""
+2.
+Student Performance Analysis
+Use the following students table for the queries.
+
+NOTE: use your friends names in the given table.
+Table: students
+student_id name class subject marks exam_date
+1 John 10 Math 85 2023-02-10
+2 Alice 10 Science 78 2023-03-15
+3 Bob 9 Math 92 2023-04-20
+4 David 9 Science 80 2023-05-25
+5 Eve 10 Math 88 2023-06-30
+6 Frank 9 Science 75 2023-07-10
+7 Grace 10 Math 90 2023-08-20
+8 Hank 9 Math 85 2023-09-15
+9 Ivy 10 Science 82 2023-10-10
+10 Jack 9 Science 79 2023-11-05
+Questions
+Find the total number of students in each class.
+Find the highest marks scored in Math.
+Find the average marks in each subject.
+Find the total number of students who scored above 80.
+Find the number of students who took the exam in each month.
+Find the subject where students scored the highest average marks.
+Find the student who scored the lowest marks in Science.
+Find the number of students in each class who scored more than 85.
+Find the average marks for each subject where the average is above 80.
+Find the student who scored the highest marks overall.
+"""
+
+mysql> create table students(student_id int primary key auto_increment,
+    -> name varchar(20),
+    -> class int,
+    -> subject varchar(20),
+    -> marks int,
+    -> exam_date date);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc students;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| student_id | int         | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(20) | YES  |     | NULL    |                |
+| class      | int         | YES  |     | NULL    |                |
+| subject    | varchar(20) | YES  |     | NULL    |                |
+| marks      | int         | YES  |     | NULL    |                |
+| exam_date  | date        | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO students(name, class, subject, marks, exam_date)
+    -> VALUES
+    -> ('Ajay', 10, 'Math', 85, '2023-02-10'),
+    -> ('Rahul', 10, 'Science', 78, '2023-03-15'),
+    -> ('Amit', 9, 'Math', 92, '2023-04-20'),
+    -> ('Rohit', 9, 'Science', 80, '2023-05-25'),
+    -> ('Vikas', 10, 'Math', 88, '2023-06-30'),
+    -> ('Ankit', 9, 'Science', 75, '2023-07-10'),
+    -> ('Nikhil', 10, 'Math', 90, '2023-08-20'),
+    -> ('Saurabh', 9, 'Math', 85, '2023-09-15'),
+    -> ('Deepak', 10, 'Science', 82, '2023-10-10'),
+    -> ('Mohit', 9, 'Science', 79, '2023-11-05');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++------------+---------+-------+---------+-------+------------+
+| student_id | name    | class | subject | marks | exam_date  |
++------------+---------+-------+---------+-------+------------+
+|          1 | Ajay    |    10 | Math    |    85 | 2023-02-10 |
+|          2 | Rahul   |    10 | Science |    78 | 2023-03-15 |
+|          3 | Amit    |     9 | Math    |    92 | 2023-04-20 |
+|          4 | Rohit   |     9 | Science |    80 | 2023-05-25 |
+|          5 | Vikas   |    10 | Math    |    88 | 2023-06-30 |
+|          6 | Ankit   |     9 | Science |    75 | 2023-07-10 |
+|          7 | Nikhil  |    10 | Math    |    90 | 2023-08-20 |
+|          8 | Saurabh |     9 | Math    |    85 | 2023-09-15 |
+|          9 | Deepak  |    10 | Science |    82 | 2023-10-10 |
+|         10 | Mohit   |     9 | Science |    79 | 2023-11-05 |
++------------+---------+-------+---------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select class,count(*) as number_of_student from students group by class;
++-------+-------------------+
+| class | number_of_student |
++-------+-------------------+
+|    10 |                 5 |
+|     9 |                 5 |
++-------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from students where subject='math' order by marks desc limit 1;
++------------+------+-------+---------+-------+------------+
+| student_id | name | class | subject | marks | exam_date  |
++------------+------+-------+---------+-------+------------+
+|          3 | Amit |     9 | Math    |    92 | 2023-04-20 |
++------------+------+-------+---------+-------+------------+
+1 row in set (0.00 sec)
+
+mysql> select subject,max(marks) from students where subject='math' group by subject;
++---------+------------+
+| subject | max(marks) |
++---------+------------+
+| Math    |         92 |
++---------+------------+
+1 row in set (0.00 sec)
+
+mysql> select subject,avg(marks) from students  group by subject;
++---------+------------+
+| subject | avg(marks) |
++---------+------------+
+| Math    |    88.0000 |
+| Science |    78.8000 |
++---------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select count(*) as total from students where marks>80;
++-------+
+| total |
++-------+
+|     6 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select month(exam_date),count(*) from students group by month(exam_date);
++------------------+----------+
+| month(exam_date) | count(*) |
++------------------+----------+
+|                2 |        1 |
+|                3 |        1 |
+|                4 |        1 |
+|                5 |        1 |
+|                6 |        1 |
+|                7 |        1 |
+|                8 |        1 |
+|                9 |        1 |
+|               10 |        1 |
+|               11 |        1 |
++------------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> select subject,avg(marks) from students group by subject order by avg(marks) desc limit 1;
++---------+------------+
+| subject | avg(marks) |
++---------+------------+
+| Math    |    88.0000 |
++---------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from students where subject='science' order by marks limit 1;
++------------+-------+-------+---------+-------+------------+
+| student_id | name  | class | subject | marks | exam_date  |
++------------+-------+-------+---------+-------+------------+
+|          6 | Ankit |     9 | Science |    75 | 2023-07-10 |
++------------+-------+-------+---------+-------+------------+
+1 row in set (0.00 sec)
+
+mysql> select subject,min(marks) from students where subject='science';
++---------+------------+
+| subject | min(marks) |
++---------+------------+
+| Science |         75 |
++---------+------------+
+1 row in set (0.00 sec)
+
+mysql> select class,count(*) from students where marks>85 group by class;
++-------+----------+
+| class | count(*) |
++-------+----------+
+|     9 |        1 |
+|    10 |        2 |
++-------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select subject,avg(marks) as average from students group by subject having average>80;
++---------+---------+
+| subject | average |
++---------+---------+
+| Math    | 88.0000 |
++---------+---------+
+1 row in set (0.00 sec)
+
+
+mysql> select * from students order by marks desc limit 1;
++------------+------+-------+---------+-------+------------+
+| student_id | name | class | subject | marks | exam_date  |
++------------+------+-------+---------+-------+------------+
+|          3 | Amit |     9 | Math    |    92 | 2023-04-20 |
++------------+------+-------+---------+-------+------------+
+1 row in set (0.00 sec)

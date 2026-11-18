@@ -1,0 +1,28 @@
+"""
+QNO  4: RENAME Table
+Task:
+
+Rename books table to library_books
+"""
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| books                  |
+| student                |
++------------------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table books rename to library_books;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| library_books          |
+| student                |
++------------------------+
+2 rows in set (0.00 sec)
+
+mysql>

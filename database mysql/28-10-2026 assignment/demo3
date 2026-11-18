@@ -1,0 +1,166 @@
+"""
+3.
+NOTE:USE TABLE from QNO 1:Table: employees
+
+Find the total number of employees in each department and display only those departments having more than 2 employees. (GROUP BY + HAVING)
+Find the total salary paid in each department and display the results in descending order of total salary. (GROUP BY + ORDER BY)
+Find the job role that has the highest total salary payout, displaying only roles where total salary is above 10,000. (GROUP BY + HAVING + ORDER BY)
+Find the average salary of employees who joined after 2022, displaying only job roles where the average salary is above 4500. (WHERE + GROUP BY + HAVING)
+Find departments where the total salary exceeds 10,000 and order the results in ascending order of department name. (GROUP BY + HAVING + ORDER BY)
+
+4.
+
+Find the average marks in each subject and display only subjects where the average is above 80. (GROUP BY + HAVING)
+Find the total number of students in each class and order them by class in descending order. (GROUP BY + ORDER BY)
+Find the subject where students scored the highest average marks, displaying only subjects where the average is above 85. (GROUP BY + HAVING + ORDER BY)
+Find the student who scored the highest marks overall. (ORDER BY + LIMIT 1)
+Find the number of students in each class who scored more than 85, displaying only classes with more than 2 such students. (GROUP BY + HAVING)
+"""
+
+mysql> select department,count(*) as total from employee group by department having total>2;
++------------+-------+
+| department | total |
++------------+-------+
+| hr         |     3 |
+| it         |     4 |
+| finance    |     3 |
++------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select department,sum(salary) as total from employee group by department order by total desc;
++------------+-----------+
+| department | total     |
++------------+-----------+
+| it         | 198000.00 |
+| finance    | 175000.00 |
+| hr         | 142000.00 |
++------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select job_role,sum(salary) as total from employee group by job_role having total>10000 order by total desc limit 1;
++----------+-----------+
+| job_role | total     |
++----------+-----------+
+| manager  | 130000.00 |
++----------+-----------+
+1 row in set (0.00 sec)
+
+ysql> select job_role,avg(salary) as average from employee where year(hire_date)>2022 group by job_role having average>4500;
++-----------+--------------+
+| job_role  | average      |
++-----------+--------------+
+| Recruiter | 40000.000000 |
+| Tester    | 46500.000000 |
+| Manager   | 70000.000000 |
++-----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select department,sum(salary) as total from employee group by department having total>10000 order by department;
++------------+-----------+
+| department | total     |
++------------+-----------+
+| finance    | 175000.00 |
+| hr         | 142000.00 |
+| it         | 198000.00 |
++------------+-----------+
+
+
+mysql> select subject,avg(marks) as average from students group by subject having average>80;
++---------+---------+
+| subject | average |
++---------+---------+
+| Math    | 88.0000 |
++---------+---------+
+1 row in set (0.00 sec)
+
+mysql> select class,count(*) as total from students group by class order by class desc;
++-------+-------+
+| class | total |
++-------+-------+
+|    10 |     5 |
+|     9 |     5 |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select subject,avg(marks) as average from students group by subject having average>85 order by average desc;
++---------+---------+
+| subject | average |
++---------+---------+
+| Math    | 88.0000 |
++---------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from students order by marks desc limit 1;
++------------+------+-------+---------+-------+------------+
+| student_id | name | class | subject | marks | exam_date  |
++------------+------+-------+---------+-------+------------+
+|          3 | Amit |     9 | Math    |    92 | 2023-04-20 |
++------------+------+-------+---------+-------+------------+
+1 row in set (0.00 sec)
+
+mysql> select class,count(*) as total from students where marks>85 group by class having total>2;
+Empty set (0.00 sec)
+
+mysql> SELECT class, COUNT(*) AS total
+    -> FROM students
+    -> WHERE marks > 85
+    -> GROUP BY class;
++-------+-------+
+| class | total |
++-------+-------+
+|     9 |     1 |
+|    10 |     2 |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into staff(staff_name,department,city,salary,experience,age,joining_date,status) values('Aarav', 'IT', 'Indore', 48000, 3, 26, '2022-04-15', 'Active'),
+    -> ('Bhavna', 'HR', 'Bhopal', 56000, 5, 31, '2020-08-20', 'Active'),
+    -> ('Chetan', 'Finance', 'Delhi', 62000, 7, 35, '2018-03-10', 'Active'),
+    -> ('Divya', 'IT', 'Pune', 78000, 9, 38, '2016-11-05', 'Active'),
+    -> ('Eshan', 'Sales', 'Indore', 51000, 4, 29, '2021-06-18', 'Inactive'),
+    -> ('Farah', 'HR', NULL, 68000, 6, 34, '2019-01-25', 'Active'),
+    -> ('Gaurav', 'Finance', 'Mumbai', 74000, 8, 40, '2017-09-12', 'Active'),
+    -> ('Heena', 'IT', 'Delhi', 59000, 5, 30, '2020-02-17', 'Inactive'),
+    -> ('Ishaan', 'Sales', 'Pune', 45000, 2, 25, '2023-01-10', 'Active'),
+    -> ('Jaya', 'HR', 'Indore', 72000, 7, 36, '2018-07-22', 'Active');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> delete from staff where staff_id=1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from staff where department='sales';
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> delete from staff where salary<50000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from staff where salary<50000;
+Empty set (0.00 sec)
+
+mysql> delete from staff where department='hr' and experience>=5;
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> delete from staff where city in('indore','bhopal');
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from staff where department not in('it','finance');
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from staff where salary between 50000 and 65000;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> delete from staff where experience<5 and status='inactive';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from staff where staff_name like 'd%';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from staff where city is null;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from staff where joining_date<'2020-01-01' and salary>=60000;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from staff where department in('it','hr') and experience>=3 and salary<70000;
+Query OK, 0 rows affected (0.00 sec)

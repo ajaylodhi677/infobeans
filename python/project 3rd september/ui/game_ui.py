@@ -2,8 +2,8 @@ import pygame
 import os
 def createwindow():
     pygame.init()
-    screen=pygame.display.set_mode((1200,700))
-    pygame.display.set_caption("UNO Game")
+    screen=pygame.display.set_mode((1600,900))
+    pygame.display.set_caption("UNO Game ajay")
     return screen
 
 def loadcardimage(card,size):
@@ -96,7 +96,7 @@ def drawgamescreen(screen,currentcard,player,computer,status):
     drawtext=font.render("DRAW CARD",True,(255,255,255))
     screen.blit(drawtext,(drawbutton.x+20,drawbutton.y+14))
 
-    unobutton=pygame.Rect(700,440,170,55)
+    unobutton=pygame.Rect(1000,440,170,55)
     pygame.draw.rect(screen,(180,30,30),unobutton)
 
     unotext=font.render("UNO!",True,(255,255,255))

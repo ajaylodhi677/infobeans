@@ -1,0 +1,111 @@
+"""
+QNO 1:
+A company wants to manage its employees and their respective departments. Each employee must belong to a department. If a department is deleted, all employees in that department should also be removed automatically.
+Tasks:
+1. Create the Departments Table
+Each department has a unique ID (DepartmentID).
+The department name must be unique.
+The department name cannot be NULL.
+2. Create the Employees Table
+Each employee has a unique ID (EmployeeID).
+Each employee has a name and salary, both cannot be NULL.
+Each employee must be assigned to a department (DepartmentID), which is a FOREIGN KEY referencing Departments(DepartmentID).
+If a department is deleted, all employees in that department should also be deleted.
+3. Insert Sample Data
+Insert at least 3 departments.
+Insert at least 5 employees (make sure at least two employees belong to the same department).
+4. Implement Query Constraints (Without Using JOIN)
+Write a query to list all employees and their department names (without using JOIN).
+Write a query to update an employee's department.
+Try deleting a department and observe what happens to the employees under that department
+"""
+
+mysql> create database info31_10_2026;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use info31_10_2026;
+Database changed
+
+mysql> create table department(did int primary key auto_increment,dname varchar(20) not null unique);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc department;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| did   | int         | NO   | PRI | NULL    | auto_increment |
+| dname | varchar(20) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> create table employee(eid int primary key auto_increment,ename varchar(50) not null,salary decimal(10,2) not null,did int,constraint fk_emp_dept foreign key(did) references department(did) on delete cascade);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into department values(1,'it'),(2,'cs'),(3,'ec'),(4,'m');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> insert into employee values('101,'ajay',50000,1);
+    '> ^C
+mysql> insert into employee values(101,'ajay',50000,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(102,'nayan',4500,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(103,'kp',100000,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values(104,'diggi',1000,1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into employee values(105,'aryan',65000,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select ename,(select dname from department where department.did=employee.did) as department_name from employee;
++-------+-----------------+
+| ename | department_name |
++-------+-----------------+
+| ajay  | it              |
+| nayan | cs              |
+| kp    | ec              |
+| diggi | it              |
+| aryan | ec              |
++-------+-----------------+
+
+mysql> update employee set did=10 where did=1;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`info31_10_2026`.`employee`, CONSTRAINT `fk_emp_dept` FOREIGN KEY (`did`) REFERENCES `department` (`did`) ON DELETE CASCADE)
+mysql>
+
+mysql> update employee set did=4 where did=1;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> update employee set did=NULL where did=1;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> delete from department where did=4;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from department;
++-----+-------+
+| did | dname |
++-----+-------+
+|   2 | cs    |
+|   3 | ec    |
+|   1 | it    |
++-----+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++-----+-------+-----------+------+
+| eid | ename | salary    | did  |
++-----+-------+-----------+------+
+| 102 | nayan |   4500.00 |    1 |
+| 103 | kp    | 100000.00 |    3 |
+| 105 | aryan |  65000.00 |    3 |
++-----+-------+-----------+------+
+3 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,27 @@
+"""
+QNO  6: DROP Table
+Task:
+
+Drop the library_books table
+"""
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| library_books          |
+| student                |
++------------------------+
+2 rows in set (0.00 sec)
+
+mysql> drop table library_books;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| student                |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql>

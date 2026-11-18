@@ -1,0 +1,229 @@
+"""
+QNO 9:
+
+
+You are designing a system to store movie reviews. Start with basic details and then evolve the table structure using ALTER, RENAME, TRUNCATE, and DROP, and perform INSERT operations at each stage.
+
+ Initial Table Creation:
+Create a table movie_reviews with the following columns:
+
+review_id INT
+
+movie_title VARCHAR(150)
+
+reviewer_name VARCHAR(100)
+
+rating DECIMAL(2,1)
+
+review_text TEXT
+
+ Insert 3 sample movie reviews
+
+Step 1: Add More Columns (ALTER)
+Add the following columns using ALTER:
+
+review_date DATE
+
+platform VARCHAR(50) — (e.g., IMDb, Rotten Tomatoes)
+
+likes INT
+
+ Insert 2 more rows with new columns
+
+ Step 2: Rename a Column
+Rename the column reviewer_name to critic_name
+
+ Step 3: Modify Column Types
+Modify:
+
+rating to DECIMAL(3,1)
+
+movie_title to VARCHAR(200)
+
+ Step 4: Drop an Unnecessary Column
+Drop the likes column
+
+ Step 5: Truncate the Table
+Truncate the table so all data is removed
+
+ Step 6: Rename the Table
+Rename movie_reviews to archived_reviews
+
+ Step 7: Drop the Table
+Finally, drop the archived_reviews table
+"""
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| employee               |
+| products               |
+| student                |
++------------------------+
+3 rows in set (0.00 sec)
+
+mysql> create table movie_reviews(review_id int primary key auto_increment,
+    -> movie_title VARCHAR(150),
+    -> reviewer_name VARCHAR(100),
+    -> rating DECIMAL(2,1),
+    -> review_text TEXT);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| employee               |
+| movie_reviews          |
+| products               |
+| student                |
++------------------------+
+4 rows in set (0.00 sec)
+
+mysql> desc movie_reviews;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| review_id     | int          | NO   | PRI | NULL    | auto_increment |
+| movie_title   | varchar(150) | YES  |     | NULL    |                |
+| reviewer_name | varchar(100) | YES  |     | NULL    |                |
+| rating        | decimal(2,1) | YES  |     | NULL    |                |
+| review_text   | text         | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into movie_reviews(movie_title,reviewer_name,rating,review_text) values
+    -> ('singham','ajay',5,'movie is good'),
+    -> ('pushpa','nayan',4,'acting is excellent'),
+    -> ('kgf','rahul',5,'story and action are amazing');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select*from movie_reviews;
++-----------+-------------+---------------+--------+------------------------------+
+| review_id | movie_title | reviewer_name | rating | review_text                  |
++-----------+-------------+---------------+--------+------------------------------+
+|         1 | singham     | ajay          |    5.0 | movie is good                |
+|         2 | pushpa      | nayan         |    4.0 | acting is excellent          |
+|         3 | kgf         | rahul         |    5.0 | story and action are amazing |
++-----------+-------------+---------------+--------+------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table movie_reviews add column review_date date,add column platform varchar(50),add column likes int;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc movie_reviews;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| review_id     | int          | NO   | PRI | NULL    | auto_increment |
+| movie_title   | varchar(150) | YES  |     | NULL    |                |
+| reviewer_name | varchar(100) | YES  |     | NULL    |                |
+| rating        | decimal(2,1) | YES  |     | NULL    |                |
+| review_text   | text         | YES  |     | NULL    |                |
+| review_date   | date         | YES  |     | NULL    |                |
+| platform      | varchar(50)  | YES  |     | NULL    |                |
+| likes         | int          | YES  |     | NULL    |                |
+
+
+mysql> insert into movie_reviews(movie_title,reviewer_name,rating,review_text,review_date,platform,likes) values
+    -> ('katon','abc',4,'dahdkhfakjl','2026-10-10','imdb',50),
+    -> ('xyx','xyx',5,'ajlajljdl','2026-10-12','bjc',40);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> alter table movie_reviews rename column reviewer_name to crictic_name;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc movie_reviews;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| review_id    | int          | NO   | PRI | NULL    | auto_increment |
+| movie_title  | varchar(150) | YES  |     | NULL    |                |
+| crictic_name | varchar(100) | YES  |     | NULL    |                |
+| rating       | decimal(2,1) | YES  |     | NULL    |                |
+| review_text  | text         | YES  |     | NULL    |                |
+| review_date  | date         | YES  |     | NULL    |                |
+| platform     | varchar(50)  | YES  |     | NULL    |                |
+| likes        | int          | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> alter table movie_reviews modify column rating decimal(3,1);
+Query OK, 5 rows affected (0.07 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> alter table movie_reviews modify column movie_title varchar(200);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc movie_reviews;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| review_id    | int          | NO   | PRI | NULL    | auto_increment |
+| movie_title  | varchar(200) | YES  |     | NULL    |                |
+| crictic_name | varchar(100) | YES  |     | NULL    |                |
+| rating       | decimal(3,1) | YES  |     | NULL    |                |
+| review_text  | text         | YES  |     | NULL    |                |
+| review_date  | date         | YES  |     | NULL    |                |
+| platform     | varchar(50)  | YES  |     | NULL    |                |
+| likes        | int          | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> alter table movie_reviews drop likes;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc movie_reviews;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| review_id    | int          | NO   | PRI | NULL    | auto_increment |
+| movie_title  | varchar(200) | YES  |     | NULL    |                |
+| crictic_name | varchar(100) | YES  |     | NULL    |                |
+| rating       | decimal(3,1) | YES  |     | NULL    |                |
+| review_text  | text         | YES  |     | NULL    |                |
+| review_date  | date         | YES  |     | NULL    |                |
+| platform     | varchar(50)  | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> truncate table movie_reviews;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select*from movie_reviews;
+Empty set (0.00 sec)
+
+mysql> rename table movie_reviews to archieved_reviews;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| archieved_reviews      |
+| employee               |
+| products               |
+| student                |
++------------------------+
+4 rows in set (0.00 sec)
+
+mysql> drop table archieved_reviews;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++------------------------+
+| Tables_in_info13_10_26 |
++------------------------+
+| employee               |
+| products               |
+| student                |
++------------------------+
+3 rows in set (0.00 sec)
+
+mysql>

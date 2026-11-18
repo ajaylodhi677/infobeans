@@ -1,0 +1,25 @@
+"""
+QNO  5: TRUNCATE Table
+Task:
+
+Truncate all data from students table
+"""
+mysql> select * from student;
++----+-------+------+--------+---------+---------------+------+
+| id | name  | age  | gender | address | mobile_number | dob  |
++----+-------+------+--------+---------+---------------+------+
+|  1 | ajay  |   22 | male   | indore  | 9111221535    | NULL |
+|  2 | rahul |   21 | male   | bhopal  | 9876543210    | NULL |
+|  3 | priya |   20 | female | indore  | 9876543211    | NULL |
+|  4 | amit  |   23 | male   | delhi   | 9876543212    | NULL |
+|  5 | neha  |   22 | female | pune    | 9876543213    | NULL |
++----+-------+------+--------+---------+---------------+------+
+5 rows in set (0.00 sec)
+
+mysql> truncate table student;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from student;
+Empty set (0.00 sec)
+
+mysql>
